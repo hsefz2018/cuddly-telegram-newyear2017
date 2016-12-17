@@ -10,8 +10,9 @@ cuddly-telegram-newyear2017
 
 ## API
 
-### `POST http://182.61.4.84:6033/<pass>/new_comment`
-- (URL) **pass**: (String) 就不告诉你就不告诉你
+### `POST http://182.61.4.84:6033/new_comment?timestamp=<timestamp>&sign=<sign>`
+- (URL) **timestamp**: (Number) UNIX 时间戳，有效期 30 s
+- (URL) **sign**: (String) 时间戳与来自东方的神秘字符串的结合之后再进行神秘 hash 算法所得的结果
 - (POST body) **uid_sub**: (String) 用户 ID (OpenID etc.)
 - (POST body) **text**: (String) 评论内容
 - (POST body) **attr**: (String) 评论的颜色和位置，以 `<colour>;<position>` 的形式记录。其中 `<colour>` 是任意 HTML 颜色值，`<position>` 是一个字符 `t` (top) 或者 `b` (bottom)
