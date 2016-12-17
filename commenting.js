@@ -331,7 +331,7 @@ var CommentCtrlPanel = function (_Component) {
           _target.classList.remove('waiting');
         }
       }; }(e.target))
-      xhr.open('POST', 'http://127.0.0.1:6033/set_filtration/' + (isOn ? '1' : '0'), true);
+      xhr.open('POST', 'http://182.61.4.84:6033/set_filtration/' + (isOn ? '1' : '0'), true);
       xhr.send();
     });
     grpFiltration.appendChild(btnFiltration.el());
@@ -343,7 +343,7 @@ var CommentCtrlPanel = function (_Component) {
         if (filState == 1) btnFiltration.manualToggle();
       }
     }
-    xhr.open('GET', 'http://127.0.0.1:6033/get_filtration', true);
+    xhr.open('GET', 'http://182.61.4.84:6033/get_filtration', true);
     xhr.send();
 
     return el;
@@ -388,7 +388,7 @@ var CommentCtrlPopupBtn = function (_PopupButton) {
       if (xhr.readyState == 4 && xhr.status == 200) {
 
     // Connecting to socket
-    var socket = io('http://127.0.0.1:6033/');
+    var socket = io('http://182.61.4.84:6033/');
     socket.on('unauthorized', function () {
       window.location.href = window.location.href;
     });
@@ -479,7 +479,7 @@ var CommentCtrlPopupBtn = function (_PopupButton) {
     
       }
     };
-    xhr.open('GET', 'http://127.0.0.1:6033/get_filtration', true);
+    xhr.open('GET', 'http://182.61.4.84:6033/get_filtration', true);
     xhr.send();
   });
 };

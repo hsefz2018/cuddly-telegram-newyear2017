@@ -5,6 +5,8 @@ cuddly-telegram-newyear2017
 
 ## API
 
+POST **http://182.61.4.84:6033/**…
+
 ### `POST /verify`
 - (HTTP header): `Content-Type: text/plain; charset=utf-8`
 - (POST body): (String) 整个 POST body 为验证密码
