@@ -6,7 +6,7 @@ cuddly-telegram-newyear2017
 ## Static files
 
 * `index.html`
-* `commenting.min.js` (同一目录，或者改动第 48 行的 URL)
+* `commenting.min.js` (同一目录，或者改动 `index.html` 第 48 行的 URL)
 
 ## API
 
