@@ -3,6 +3,11 @@ cuddly-telegram-newyear2017
 
 [Cuddly Telegram](https://github.com/hsefz2018/cuddly-telegram-newyear2016) is back!
 
+## Static files
+
+* `index.html`
+* `commenting.min.js` (同一目录，或者改动第 48 行的 URL)
+
 ## API
 
 POST **http://182.61.4.84:6033/**…
