@@ -1,63 +1,27 @@
-fuwa · futa
-===========
+cuddly-telegram-newyear2017
+===========================
 
-Yet another thorough solution to live performances with instant comments.
+[Cuddly Telegram](https://github.com/hsefz2018/cuddly-telegram-newyear2016) is back!
 
-## Directory structure
-
-* `cmtsvr/`: Server-side application with Node.js.
-* `player/`: Client-side HTML pages. These are automatically served by running the server-side application.
-
-## Installation
-
-* Make sure you have a relatively-new version of [Node.js](http://nodejs.org/) installed. (v5.10.1 works, others untested)
-* On your server, clone the repository and `cd` to the project in a terminal.
-* Run `cd ./cmtsvr`.
-* Run `npm install` to install dependencies.
-* Run `npm test` to run tests. (Optional)
-* Modify [`cmtsvr/main.js`](cmtsvr/main.js) to set the passes of different roles.
-* Run `npm start` to start the whole application.
-
-## Usage
-
-* `http://<ip>:6033/*` will be the commenting API server.
-* `http://<ip>:6033/player/*` will be the player's static file server.
-* The ports above can be specified with the `$PORT` environment variable, for instance run `PORT=8080 npm start`.
-* The default HLS stream to play is `http://localhost:6060/master.m3u8`.
-    - Can be changed at [`player/play.html`](player/play.html).
-    - Can be tested with [`HLS Endless`](https://github.com/dayvson/hls-endless).
-
-## IM server API
+## API
 
 ### `POST /verify`
-- (POST body): (String) the pass
+- (HTTP header): `Content-Type: text/plain; charset=utf-8`
+- (POST body): (String) 整个 POST body 为验证密码
 
-Verification. Send a secret pass as the whole request body to prove that the server is an authorized IM server.
+用于确认本服务器确实是一台正常向的服务器。本次请求通过后会设定一个有效期为 30 天的 cookie，后续请求需要包含这个 cookie 才会被接受。
 
-Body sample: `$$$letmeinImtheWeChatserver$$$`
+（反正传不传 MD5 都是明文传输……总之就这样吧 233333）
 
-### `POST /new_client`
-- (POST body) **uid_sub**: (String) the sub-client ID
-
-Creates a new sub-client. Enclose an ID (OpenID, etc.) of a user in the request to notify the server of a newcomer.
-
-Body sample: `uid_sub=d41d8cd98f00b204e9800998ecf8427e`
+POST body 样例: `$$$letmeinImtheWeChatserver$$$`
 
 ### `POST /new_comment`
-- (POST body) **uid_sub**: (String) the sub-client ID
-- (POST body) **text**: (String) the text of the comment
-- (POST body) **attr**: (String) the attribute in the form of `<colour>;<position>`, where `<position>` is a character `t` (top) or `b` (bottom)
+- (POST body) **uid_sub**: (String) 用户 ID (OpenID etc.)
+- (POST body) **text**: (String) 评论内容
+- (POST body) **attr**: (String) 评论的颜色和位置，以 `<colour>;<position>` 的形式记录。其中 `<colour>` 是任意 HTML 颜色值，`<position>` 是一个字符 `t` (top) 或者 `b` (bottom)
 
-Creates a new comment. The sub-client ID should be registered by `/new_client` first.
+发送一条评论。
 
-Body sample: `uid=d41d8cd98f00b204e9800998ecf8427e&text=Hello+World&attr=#ffffff;t`
+POST body 样例: `uid=d41d8cd98f00b204e9800998ecf8427e&text=Hello+World&attr=#ffffff;t`
 
-**Note: bodies in encoded-form or JSON format can both be accepted.**
-
-## TODO
-
-* ~~Remove `/new_client` and handle regstration internally~~ (Done)
-* ~~Test the IM APIs~~ (Done)
-* ~~Use an environment variable to decide the port to listen on~~ (Done)
-* Folder structure refactoring
-* WeChat integration
+**注：以 x-www-form-urlencoded 或者 JSON 格式发送请求均可以被接受。**
