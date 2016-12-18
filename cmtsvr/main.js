@@ -2,7 +2,7 @@ const Koa = require('koa')
 const app = new Koa()
 
 const send = require('koa-send')
-const bodyParser = require('koa-body')()
+const bodyParser = require('koa-body')({ multipart: true })
 
 const Router = require('koa-better-router')
 const router = new Router().loadMethods()
@@ -224,7 +224,7 @@ router.post('/verify', checkCookies(null), bodyParser, async (ctx, next) => {
 })
 
 router.post('/new_comment', bodyParser, async (ctx, next) => {
-  const reqbody = ctx.request.body
+  const reqbody = ctx.request.body.fields
   const timestamp = parseInt(ctx.query.timestamp)
   const signature = ctx.query.sign
   if (reqbody.uid_sub == null || reqbody.text == null || reqbody.attr == null) return ctx.status = 400
