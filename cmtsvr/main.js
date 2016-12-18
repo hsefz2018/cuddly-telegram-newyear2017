@@ -170,8 +170,8 @@ const checkCookies = (_role) => async (ctx, next) => {
 }
 
 const clientID = (ctx) => {
-  if (ctx.method.toUpperCase() === 'POST' && ctx.request.body.uid_sub != null) {
-    return 'WeChat-' + ctx.request.body.uid_sub
+  if (ctx.method.toUpperCase() === 'POST' && ctx.request.body != null && ctx.request.body.fields != null && ctx.request.body.fields.uid_sub != null) {
+    return 'WeChat-' + ctx.request.body.fields.uid_sub
   } else {
     return ctx.cookies.get('auth')
   }
