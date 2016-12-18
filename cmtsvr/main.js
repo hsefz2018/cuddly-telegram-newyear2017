@@ -169,7 +169,7 @@ const checkCookies = (_role) => async (ctx, next) => {
 
 const clientID = (ctx) => {
   if (ctx.method.toUpperCase() === 'POST' && ctx.request.body.uid_sub != null) {
-    return ctx.cookies.get('auth') + '-' + ctx.request.body.uid_sub
+    return 'WeChat-' + ctx.request.body.uid_sub
   } else {
     return ctx.cookies.get('auth')
   }
@@ -223,8 +223,12 @@ router.post('/verify', checkCookies(null), bodyParser, async (ctx, next) => {
 
 router.post('/new_comment', checkCookies(role_cfg.IMSERVER), bodyParser, async (ctx, next) => {
   const reqbody = ctx.request.body
+  const timestamp = ctx.query.timestamp
+  const signature = ctx.query.sign
+  console.log(ctx.query)
+  console.log(timestamp, signature)
   if (reqbody.uid_sub == null || reqbody.text == null || reqbody.attr == null) return ctx.status = 400
-  await ensureClientWithID(clientID(ctx))
+  //await ensureClientWithID(clientID(ctx))
   await createComment(clientID(ctx), reqbody.text, reqbody.attr)
   ctx.body = 'Success ♪( ´▽｀)'
 })
