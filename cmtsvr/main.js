@@ -221,7 +221,7 @@ router.post('/verify', checkCookies(null), bodyParser, async (ctx, next) => {
   return next()
 })
 
-router.post('/new_comment', checkCookies(role_cfg.IMSERVER), bodyParser, async (ctx, next) => {
+router.post('/new_comment', bodyParser, async (ctx, next) => {
   const reqbody = ctx.request.body
   const timestamp = ctx.query.timestamp
   const signature = ctx.query.sign
