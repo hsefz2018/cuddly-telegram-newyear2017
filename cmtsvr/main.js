@@ -230,8 +230,8 @@ router.post('/new_comment', bodyParser, async (ctx, next) => {
   if (reqbody.uid_sub == null || reqbody.text == null || reqbody.attr == null) return ctx.status = 400
   //await ensureClientWithID(clientID(ctx))
   if (timestamp < Date.now() / 1000 - 30 || signature !== md5(timestamp.toString() + pass_signature)) return ctx.status = 400
-  await createComment(clientID(ctx), reqbody.text, reqbody.attr)
-  ctx.body = 'Success ♪( ´▽｀)'
+  if (await createComment(clientID(ctx), reqbody.text, reqbody.attr)) ctx.body = 'Success ♪( ´▽｀)'
+  else { ctx.status = 429; ctx.body = 'Failure' }
 })
 
 const server = require('http').Server(app.callback())
