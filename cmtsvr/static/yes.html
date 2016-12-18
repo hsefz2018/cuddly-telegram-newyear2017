@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Yes!</title>
+  </head>
+  <body>
+    <script src='/lib/socket.io-1.6.0.min.js'></script>
+    <script>
+      var socket = io();
+      socket.on('unauthorized', function () {
+        window.location.href = window.location.href;
+      });
+
+      var getRandomColour = function () {
+        var r = Math.floor(128 + Math.random() * 128).toString(16),
+            g = Math.floor(128 + Math.random() * 128).toString(16),
+            b = Math.floor(128 + Math.random() * 128).toString(16);
+        if (r.length < 2) r = '0' + r;
+        if (g.length < 2) g = '0' + g;
+        if (b.length < 2) b = '0' + b;
+        return '#' + r + g + b;
+      };
+      document.write('Yes!');
+      var Yes = [
+        'Yes ♪( ´▽｀)', 'Yes \\(//∇//)\\', 'Yes (≧v≦)', 'Yes ♪', 'Yes!',
+        '富强', '民主', '文明', '和谐', '自由', '平等', '公正', '法治', '爱国', '敬业', '诚信', '友善',
+        '富强民主文明和谐', '自由平等公正法治', '爱国敬业诚信友善',
+        '富强民主文明和谐自由平等公正法治爱国敬业诚信友善'
+      ];
+      setInterval(function () {
+        socket.emit('pop', Yes[Math.floor(Math.random() * Yes.length)], getRandomColour() + ';' + (Math.random() < 0.7 ? 't' : 'b'));
+      }, 400);
+    </script>
+  </body>
+</html>

@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Verification</title>
+  </head>
+  <body>
+    <input id='txt-code'></input>
+    <button id='btn-send'>Go</button>
+    <br><div id='txt-msg' style='color: red'></div>
+
+    <script>
+      var createXHR;
+      if (window.XMLHttpRequest) createXHR = function () { return new XMLHttpRequest(); };
+      else createXHR = function () { return new ActiveXObject('Microsoft.XMLHTTP'); };
+
+      document.getElementById('btn-send').addEventListener('click', function () {
+        document.getElementById('txt-msg').textContent = 'Loading...';
+        var xhr = createXHR();
+        xhr.onreadystatechange = function () {
+          if (xhr.readyState == 4 && xhr.status == 200) {
+            document.getElementById('txt-msg').textContent = xhr.responseText;
+          }
+        }
+        xhr.open('POST', '/verify', true);
+        xhr.send(encodeURI(document.getElementById('txt-code').value));
+      });
+    </script>
+  </body>
+</html>
