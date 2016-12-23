@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="zh-cn">
+  <head>
+    <meta charset="utf-8">
+    <title>Display</title>
+    <meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no">
+    <script src='https://cdn.staticfile.org/socket.io/1.6.0/socket.io.min.js'></script>
+    <script src='./commenting-disp.js'></script>
+    <style type="text/css">
+    body{
+      font-family: "ff-tisa-web-pro-1","ff-tisa-web-pro-2","Lucida Grande","Helvetica Neue",Helvetica,Arial,"Hiragino Sans GB","Hiragino Sans GB W3","Microsoft YaHei UI","Microsoft YaHei","WenQuanYi Micro Hei",sans-serif !important;
+      background-color: black;
+    }
+    </style>
+
+    <script>
+      window.onload = function () {
+        var ctel = new window.ctel();
+        ctel.initEl();
+        document.body.appendChild(ctel.getEl());
+        ctel.emitTop(0, 'Started!!', 'white');
+
+        var socket = io('http://182.61.4.84:6033/');
+        socket.on('unauthorized', function () {
+          window.location.href = window.location.href;
+        });
+        socket.on('comment', function (c) {
+          var p = c.attr.lastIndexOf(';');
+          var colour = c.attr.substring(0, p), style = c.attr.substring(p + 1);
+          if (style === 't') ctel.emitTop(c.id, c.text, colour);
+          else if (style === 'b') ctel.emitBottom(c.id, c.text, colour);
+        });
+      };
+    </script>
+  </body>
+</html>
+
