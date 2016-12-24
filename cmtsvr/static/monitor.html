@@ -20,6 +20,8 @@
         li.innerHTML = c.text + ' | <small>' + c.attr + '</small> | ';
         li.innerHTML += '<button id="btn-approve-' + c.id + '">√</button>';
         li.innerHTML += '<button id="btn-overrule-' + c.id + '">(´Д` )</button>';
+        li.innerHTML += '<button id="btn-trust-' + c.id + '">我好爱你噢</button>';
+        li.innerHTML += '<button id="btn-ban-' + c.id + '">不想再见到你</button>';
         document.getElementById('list').appendChild(li);
         document.getElementById('btn-approve-' + c.id).addEventListener('click', (function (_id) { return function (e) {
           socket.emit('approve', _id);
@@ -29,6 +31,14 @@
         document.getElementById('btn-overrule-' + c.id).addEventListener('click', (function (_id) { return function (e) {
           socket.emit('overrule', _id);
           document.getElementById('item-' + _id).remove(true);
+        }; })(c.id));
+        document.getElementById('btn-trust-' + c.id).addEventListener('click', (function (_id) { return function (e) {
+            socket.emit('trust', _id);
+            document.getElementById('item-' + _id).remove(true);
+        }; })(c.id));
+        document.getElementById('btn-ban-' + c.id).addEventListener('click', (function (_id) { return function (e) {
+            socket.emit('ban', _id);
+            document.getElementById('item-' + _id).remove(true);
         }; })(c.id));
       });
     </script>

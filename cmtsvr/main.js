@@ -33,11 +33,7 @@ app.use(async (ctx, next) => {
 })
 app.use(router.middleware())
 
-const pass_cfg = {
-  'nodnod985661441': role_cfg.MODERATOR,
-  'uojuoj998244353': role_cfg.DISPLAY,
-  'cfcf1000000007': role_cfg.IMSERVER
-}
+const pass_cfg = require('./config')
 const pass_signature = require('./pass.js')
 const md5 = require('md5')
 
@@ -57,18 +53,21 @@ const approveComment = async (cid) => {
 }
 
 const createComment = async (uid, text, attr) => {
+  let score = 0;
   // Validation
   if (!text || !attr) return false
   if (attr.length > 20 || (attr.substr(-2) !== ';t' && attr.substr(-2) !== ';b')) return false
   // Density check
   if (!(await redis.set('cooldown:' + uid, 1, 'EX', 5, 'NX'))) return false
+  if ((await redis.get('banned_cmt')).includes(text)) return false;
+  if ((await redis.get('trusted_cmt')).includes(text)) score = 1;
   // Add to the database
   console.log(`From ${uid}: ${text} / ${attr}`)
   const cid = await redis.incr('cmt_count')
   const transaction = redis.multi()
     .hmset('cmt:' + cid,
       'owner', uid, 'text', text, 'attr', attr,
-      'created', Date.now(), 'score', 0)
+      'created', Date.now(), 'score', score)
     .lpush('cmtby:' + uid, cid)
   const jury = await redis.smembers('group:' + role_cfg.MODERATOR)
   if (jury.length != 0) {
@@ -282,6 +281,16 @@ io.on('connection', async (socket) => {
   socket.on('overrule', ((_socket) => async (cid) => {
     await scoreComment(cid, _socket.uid, -1)
   })(socket))
+  socket.on('trust', ((_socket) => async (cid) => {
+    let cmt = await redis.get('cmt:' + cid);
+    await scoreComment(cid, _socket.uid, +1);
+    await redis.sadd('trusted_cmt', cmt.text);
+  }))
+  socket.on('ban', ((_socket) => async (cid) => {
+      let cmt = await redis.get('cmt:' + cid);
+      await scoreComment(cid, _socket.uid, -1);
+      await redis.sadd('banned_cmt', cmt.text);
+  }))
 })
 
 const port = process.env.PORT || 6033
