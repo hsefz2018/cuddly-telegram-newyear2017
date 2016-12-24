@@ -18,7 +18,7 @@
         var ctel = new window.ctel();
         ctel.initEl();
         document.body.appendChild(ctel.getEl());
-        ctel.emitTop(0, 'Started!!', 'white');
+        //ctel.emitTop(0, 'Started!!', 'white');
 
         var socket = io('http://182.61.4.84:6033/');
         socket.on('unauthorized', function () {
@@ -27,6 +27,7 @@
         socket.on('comment', function (c) {
           var p = c.attr.lastIndexOf(';');
           var colour = c.attr.substring(0, p), style = c.attr.substring(p + 1);
+          if (colour === 'blue') colour = '#3377ff';
           if (style === 't') ctel.emitTop(c.id, c.text, colour);
           else if (style === 'b') ctel.emitBottom(c.id, c.text, colour);
         });

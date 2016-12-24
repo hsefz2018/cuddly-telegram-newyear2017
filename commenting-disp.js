@@ -122,7 +122,7 @@
     // Abstractions
     var now = Date.now();
     var x = (this.opt.width - el.clientWidth) / 2;
-    var t = 2000;
+    var t = 5000;
     var unblock = now + t;
     var rowIdx = -1;
     for (var i = 0; i < this._rowBSpare.length; ++i) {
