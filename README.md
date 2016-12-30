@@ -36,3 +36,6 @@ uid_sub=d41d8cd98f00b204e9800998ecf8427e&text=Hello%20World&attr=green%3Bt
 ```
 
 **注：以 x-www-form-urlencoded，multipart 或者 JSON 格式发送请求均可以被接受。**
+
+## Update
+2017年弹幕数据已经上传至./dataset
